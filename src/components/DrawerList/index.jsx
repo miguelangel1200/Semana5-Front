@@ -6,7 +6,8 @@ import MessageList from "../Messages";
 
 const DrawerList = ({ users }) => {
   const [showMessages, setShowMessages] = useState(false);
-
+  const [selectedUser, setSelectedUser] = useState(null);
+  
   const { Sider, Content } = Layout;
 
   return (
@@ -26,10 +27,13 @@ const DrawerList = ({ users }) => {
           dataSource={users}
           renderItem={(item) => (
             <List.Item
-              onClick={() => setShowMessages(true)}
-              style={{
-                cursor: "pointer",
-              }}
+                onClick={() => {
+                  setShowMessages(true);
+                  setSelectedUser(item);
+                }}
+                  style={{
+                    cursor: "pointer",
+                  }}
             >
               <List.Item.Meta
                 avatar={
@@ -49,7 +53,7 @@ const DrawerList = ({ users }) => {
         />
       </Sider>
       <Layout>
-        <Content>{showMessages ? <MessageList /> : <EmptyChat />}</Content>
+        <Content>{showMessages ? <MessageList user={selectedUser} /> : <EmptyChat />}</Content>
       </Layout>
     </Layout>
   );

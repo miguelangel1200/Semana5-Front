@@ -2,16 +2,20 @@ import { useState, useEffect } from "react";
 import { ModalRegister, DrawerList } from "../../components";
 import { get } from "../../service"
 import Pusher from "pusher-js";
+import HeaderLayout from "../../layout";
 
 const Chat = () => {
 
   const [users, setUsers] = useState([])
 
   const fetchUsers = async () => {
-    const response = await get("/user");
-    console.log(response)
-    setUsers(response.data)
-  }
+    const { id } = JSON.parse(localStorage.getItem("user"));
+ 
+    const response = await get(`/user/${id}`);
+ 
+    setUsers(response.data);
+  };
+ 
 
   useEffect(() => {
     fetchUsers()
@@ -27,13 +31,11 @@ const Chat = () => {
       console.log("message from pusher", message)
     }) 
   }, [])
-
-
   return (
-    <div>
+    <HeaderLayout>
       {users.length > 0 && <DrawerList users={users} />}
       <ModalRegister fetchUsers={fetchUsers}/>
-    </div>
+    </HeaderLayout>
   );
 };
 
